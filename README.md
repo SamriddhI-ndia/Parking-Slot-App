@@ -2,6 +2,9 @@
 
 It is a Parking Slot Booking App which allows user to book slot for parking their vehicles. It is supported for both Android and iOS.
 
+## Demo Link
+[Parking Zone App](https://drive.google.com/file/d/1x9iKPnHlNDnYL8iquUehlrSz0syg57po/view?usp=sharing)
+
 It is built to fulfill the following requirements:
 
 ### Problem Statement A: To check and book parking if available.
