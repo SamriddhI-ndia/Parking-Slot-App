@@ -95,7 +95,6 @@ const handleUnbookedSlot = (item) =>{
             </View>
         )
     }else{
-      console.log("chal to hai  ")
         return (
             <View style={styles.leftSlotContainer}>
               <TouchableHighlight

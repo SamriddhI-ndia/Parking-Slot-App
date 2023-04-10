@@ -18,9 +18,15 @@ To Develop:
 2.	View whould also show time-period of occupied parking on a date.
 
 ## 🚀 How to use
+First download zip folder then:
 
 ```sh
 npm install
 npm start
 ```
+## Running a project in Expo Go
+Download Expo Go from the Google Play Store or the Apple App Store.
+
+- On your iPhone or iPad, open the default Apple "Camera" app and scan the QR code you see in the terminal to connect to your local development server.
+- On your Android device, press "Scan QR Code" on the "Home" tab of the Expo Go app and scan the QR code you see in the terminal.
 

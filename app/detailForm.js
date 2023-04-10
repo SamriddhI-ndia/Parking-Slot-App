@@ -2,6 +2,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSearchParams } from 'expo-router';
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Picker } from 'react-native-form-component';
 import { db } from '../firebase';
@@ -17,6 +18,7 @@ const DetailForm = ()=>{
     const params = useSearchParams();
     const slot = params.slot;
     let date = params.date;
+    const Router = useRouter();
     
   function showStartTimePicker() {
     setStartTimePicker(true);
@@ -92,6 +94,7 @@ async function handlePress(){
       if(flag) {
         await addDoc(collection(db, "bookings"), newBooking); 
         alert("Booking Successful!");
+        Router.push(`/bookParkingSlot`)
       }
       else alert('Slot not available!')
     } catch(e){ 
