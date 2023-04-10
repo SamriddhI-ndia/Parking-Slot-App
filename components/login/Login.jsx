@@ -12,6 +12,8 @@ const Login = () =>{
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
+          setEmail('')
+          setPassword('')
             router.push(`/options`)
         } 
       });  
@@ -23,10 +25,16 @@ const Login = () =>{
     .then((userCredential) => {
     const user = userCredential.user;
     alert('SignUp Successful!')
+    if (user) {
+      setEmail('')
+      setPassword('')
+        router.push(`/options`)
+    } 
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    alert(errorMessage);
     console.log(errorCode, errorMessage)
   });
   }
@@ -36,6 +44,11 @@ const Login = () =>{
     .then((userCredential) => {
     const user = userCredential.user;
     alert('Login Successful!')
+    if (user) {
+      setEmail('')
+      setPassword('')
+        router.push(`/options`)
+    } 
   })
   .catch((error) => {
     const errorCode = error.code;

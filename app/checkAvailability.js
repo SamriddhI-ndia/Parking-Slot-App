@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FlatList, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SIZES, images } from '../constants';
 import { db } from '../firebase';
+import StackNav from '../components/StackNav';
 
 export default function BookParkingSlot() {
   const Router = useRouter();
@@ -29,6 +30,7 @@ export default function BookParkingSlot() {
       const q1 = query(collection(db, "bookings"), where("yearMonthDay", "==", yearMonthDay));
       const querySnapshot = await getDocs(q1);
       querySnapshot.forEach((doc) => {
+        
           const sts = parseInt(doc.data().startTimeStamp);
           const ets = parseInt(doc.data().endTimeStamp);
           if(sts>=queryStartTime&&sts<=queryEndTime&&ets>=queryStartTime&&ets<=queryEndTime){
@@ -43,6 +45,10 @@ export default function BookParkingSlot() {
   }
   fun();
 },[])
+
+function timeStamp(timeString){
+    return (timeString.substring(0,2)+":"+timeString.substring(2,5));
+}
 
 const handleBookedSlot = (item)=>{
   try{
@@ -109,6 +115,7 @@ function renderItemArr2({item, index}) {
 }
   return (
     <SafeAreaView>
+      <StackNav title="Parking Zone"></StackNav>
         <Modal
         animationType="slide"
         transparent={true}
@@ -136,11 +143,11 @@ function renderItemArr2({item, index}) {
                       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
                         <View>
                           <Text style={modalstyles.label}>Start Time:</Text>
-                          <Text style={styles.modalDetailText}>{item.startTimeStamp.toString().substring(0,2)+":"+item.startTimeStamp.toString().substring(2,5)}</Text>
+                          <Text style={styles.modalDetailText}>{timeStamp(item.startTimeStamp)}</Text>
                         </View>
                         <View>
                           <Text style={modalstyles.label}>End time:</Text>
-                          <Text style={styles.modalDetailText}>{item.endTimeStamp.toString().substring(0,2)+":"+item.endTimeStamp.toString().substring(2,5)}</Text>
+                          <Text style={styles.modalDetailText}>{timeStamp(item.endTimeStamp)}</Text>
                         </View>
                       </View>
                     </View>

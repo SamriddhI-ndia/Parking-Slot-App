@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { images } from '../constants';
+import StackNav from '../components/StackNav';
 
 const DateTimeSelection = () =>{
     const Router = useRouter();
@@ -66,7 +67,7 @@ const DateTimeSelection = () =>{
   }
     return (
     <SafeAreaView style={{backgroundColor:'white'}}>
-        
+        <StackNav title="Choose Date and Time "></StackNav>
         <View style={{padding:30,alignContent:'center',justifyContent:'center'}}>
         <Image source={images.search} dimension='50% ' style={{width: 320,
       height: 300, margin:20}}></Image>
@@ -79,7 +80,7 @@ const DateTimeSelection = () =>{
             is24Hour={true}
             onChange={onDateSelected}
             style={styleSheet.datePicker}
-            // minimumDate={new Date(year, month, day)}
+            minimumDate={new Date(year, month, day)}
           />
         )}
         {!datePicker && (

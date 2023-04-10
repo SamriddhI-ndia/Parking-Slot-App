@@ -1,6 +1,7 @@
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { images } from "../constants";
+import { images, icons } from "../constants";
+import StackNav from '../components/StackNav';
 
 const Options = () =>{
     const Router = useRouter();
@@ -8,6 +9,7 @@ const Options = () =>{
         <KeyboardAvoidingView
         style={styles.container}
       >  
+      <StackNav title="Parking Zone App"></StackNav>
           <Image source={images.carLogo} dimension='50% ' style={{width: 550, height: 450, marginTop:-150}}></Image>
           <View style={styles.buttonContainer}>
           <TouchableOpacity

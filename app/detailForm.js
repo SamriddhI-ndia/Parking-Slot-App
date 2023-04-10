@@ -2,10 +2,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSearchParams } from 'expo-router';
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, Redirect } from 'expo-router';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Picker } from 'react-native-form-component';
 import { db } from '../firebase';
+import StackNav from '../components/StackNav';
 const DetailForm = ()=>{
     const monthIndex = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'}
     const [vehicle, setVehicle]  = useState("");
@@ -38,7 +39,7 @@ const DetailForm = ()=>{
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
   }
- 
+   
   function onStartTimeSelected(event, value) {
     console.log(value);
     const currentDate = (new Date(Date.now()))
@@ -70,8 +71,8 @@ async function handlePress(){
       const myArray = date.split(" ");
       const x=(parseInt(monthIndex[myArray[1]])).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
       const yearMonthDay = myArray[3]+"-"+x+"-"+myArray[2];
-      const startTimeStamp = parseInt(startTime.getHours()+""+startTime.getMinutes());
-      const endTimeStamp = parseInt(endTime.getHours()+""+endTime.getMinutes());
+      const startTimeStamp = startTime.getHours()+""+startTime.getMinutes();
+      const endTimeStamp = endTime.getHours()+""+endTime.getMinutes();
       const newBooking = {yearMonthDay, slot, startTimeStamp, endTimeStamp, vehicle, vehicleNumber, vehicleType}
       let flag=true;
       try{
@@ -84,7 +85,6 @@ async function handlePress(){
         const arr2 = parseInt(endTimeStamp); 
         if((arr1<ar&&arr2>ar)||(arr1<br&&arr2>br)){
             flag = false;
-            alert('Slot not available!')
           }
         });
       }catch(e){
@@ -107,6 +107,7 @@ return (
       style={styles.container}
       behavior="padding"
     >
+      <StackNav title="Vehicle Details Form"></StackNav>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Vehicle Model: </Text>
         <TextInput

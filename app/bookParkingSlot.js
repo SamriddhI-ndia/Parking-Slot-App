@@ -1,10 +1,12 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useRouter } from 'expo-router';
+import StackNav from '../components/StackNav';
+import { useRouter, Stack} from 'expo-router';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SIZES, images } from '../constants';
 import { db } from '../firebase';
+import { useIsFocused } from '@react-navigation/native';
 
 const Arr1 =['A1','A2','A3','A4','A5','A6','A7','A8','A9','A10'];
   const Arr2 =['B1','C1','B2','C2','B3','C3','B4','C4','B5','C5',
@@ -26,13 +28,20 @@ export default function BookParkingSlot() {
   const currentDate = new Date();
   const yearMonthDay = date.getFullYear()+"-"+("0" + (date.getMonth() + 1)).slice(-2)+"-"+("0" + date.getDate()).slice(-2);
   let day = currentDate.getDate();
-  let month = currentDate.getMonth() + 1;
+  let month = currentDate.getMonth();
   let year = currentDate.getFullYear();
   let tempBookedSlot = [];
-  
-  
+  const isFocused = useIsFocused();
+
+  useEffect(()=>{
+    showDatePicker();
+  },[isFocused])
+
 useEffect( ()=>{
-  const fun = async ()=>{
+  fun();
+},[date])
+
+const fun = async ()=>{
   try{
       const q1 = query(collection(db, "bookings"), where("yearMonthDay", "==", yearMonthDay));
       const querySnapshot = await getDocs(q1);
@@ -45,12 +54,14 @@ useEffect( ()=>{
       console.log(e);
     }
   }
-  fun();
-},[date])
 
   function handlePress(item) {
     Router.push(`/detailForm?slot=${item}&date=${date}`);
   }
+
+  function timeStamp(timeString){
+    return (timeString.substring(0,2)+":"+timeString.substring(2,5));
+}
 
   function showDatePicker() {
     setDatePicker(true);
@@ -74,7 +85,6 @@ useEffect( ()=>{
       setBookedSlotDetailList(tmpList);
       setModalVisible(true)
       setSelectedSlot(item);
-      console.log(tmpList)
     }catch(e){
         console.log(e);
     }  
@@ -133,6 +143,7 @@ const handleUnbookedSlot = (item) =>{
   }
   return (
     <SafeAreaView>
+      <StackNav title="Parking Zone"></StackNav>
       <Modal
         animationType="slide"
         transparent={true}
@@ -157,13 +168,13 @@ const handleUnbookedSlot = (item) =>{
                       <Text style={modalstyles.label}>Vehicle Type:</Text>
                       <Text style={styles.modalDetailText}>{item.vehicleType}</Text>
                       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-                        <View>
+                      <View>
                           <Text style={modalstyles.label}>Start Time:</Text>
-                          <Text style={styles.modalDetailText}>{item.startTimeStamp.toString().substring(0,2)+":"+item.startTimeStamp.toString().substring(2,5)}</Text>
+                          <Text style={styles.modalDetailText}>{timeStamp(item.startTimeStamp)}</Text>
                         </View>
                         <View>
                           <Text style={modalstyles.label}>End time:</Text>
-                          <Text style={styles.modalDetailText}>{item.endTimeStamp.toString().substring(0,2)+":"+item.endTimeStamp.toString().substring(2,5)}</Text>
+                          <Text style={styles.modalDetailText}>{timeStamp(item.endTimeStamp)}</Text>
                         </View>
                       </View>
                     </View>
